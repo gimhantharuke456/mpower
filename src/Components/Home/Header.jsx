@@ -1,7 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import AuthModal from "../Modals/AuthModal";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const [isAuthModalOpened, setIsAuthModalOpened] = useState(false);
   return (
     <header className="header">
       <nav>
@@ -23,7 +26,18 @@ const Header = () => {
             <Link to="#home">Home</Link>
           </li>
           <li className="link">
-            <button className="btn">Community</button>
+            <button
+              onClick={() => {
+                if (localStorage.getItem("userId")) {
+                  navigate("/community");
+                } else {
+                  setIsAuthModalOpened(true);
+                }
+              }}
+              className="btn"
+            >
+              Community
+            </button>
           </li>
         </ul>
       </nav>
@@ -41,10 +55,27 @@ const Header = () => {
             of!
           </p>
           <div className="header__btn">
-            <button className="btn">Join Today</button>
+            <button
+              onClick={() => {
+                if (localStorage.getItem("userId")) {
+                  navigate("/community");
+                } else {
+                  setIsAuthModalOpened(true);
+                }
+              }}
+              className="btn"
+            >
+              Join Today
+            </button>
           </div>
         </div>
       </div>
+      <AuthModal
+        onClose={() => {
+          setIsAuthModalOpened(false);
+        }}
+        isOpen={isAuthModalOpened}
+      />
     </header>
   );
 };

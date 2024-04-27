@@ -5,18 +5,20 @@ import { useSnapshot } from "valtio";
 import state from "../../Utils/Store";
 import UploadFileService from "../../Services/UploadFileService";
 import UserService from "../../Services/UserService";
+import { useNavigate } from "react-router-dom";
 const uploader = new UploadFileService();
 const UserProfileModal = () => {
   const snap = useSnapshot(state);
   const [uploadUserLoading, setUploadUserLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
+  console.log(`Current user uid ${snap.currentUser?.uid}`);
   const [updatedUser, setUpdatedUser] = useState({
-    uid: snap.currentUser?.uid,
     username: snap.currentUser?.username,
     biography: snap.currentUser?.biography,
     fitnessGoals: snap.currentUser?.fitnessGoals,
     profileVisibility: snap.currentUser?.profileVisibility,
     image: snap.currentUser?.image,
+    uid: snap.currentUser?.uid,
   });
 
   const handleBiographyChange = (e) => {
@@ -58,6 +60,7 @@ const UserProfileModal = () => {
     }
     setUploadUserLoading(false);
   };
+  const navigte = useNavigate();
 
   return (
     <Modal
@@ -74,6 +77,16 @@ const UserProfileModal = () => {
           key="update"
           type="primary"
           onClick={handleUpdateProfile}
+        >
+          Update
+        </Button>,
+        <Button
+          key="update"
+          type="primary"
+          onClick={() => {
+            localStorage.clear();
+            navigte("/");
+          }}
         >
           Update
         </Button>,

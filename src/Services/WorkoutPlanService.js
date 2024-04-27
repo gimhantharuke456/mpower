@@ -1,59 +1,92 @@
+// WorkoutPlanService.js
+
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/workout-plans";
+const BASE_URL = "http://localhost:8080/api";
 
 class WorkoutPlanService {
-  // Get all workout plans
   async getAllWorkoutPlans() {
     try {
-      const response = await axios.get(API_URL);
+      const accessToken = localStorage.getItem("accessToken");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      const response = await axios.get(`${BASE_URL}/workoutPlans`, config);
       return response.data;
     } catch (error) {
-      console.error("Error fetching workout plans:", error);
-      throw error;
+      throw new Error("Failed to fetch workout plans");
     }
   }
 
-  // Get workout plan by ID
   async getWorkoutPlanById(id) {
     try {
-      const response = await axios.get(`${API_URL}/${id}`);
+      const accessToken = localStorage.getItem("accessToken");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      const response = await axios.get(
+        `${BASE_URL}/workoutPlans/${id}`,
+        config
+      );
       return response.data;
     } catch (error) {
-      console.error(`Error fetching workout plan with ID ${id}:`, error);
-      throw error;
+      throw new Error("Failed to fetch workout plan");
     }
   }
 
-  // Create a new workout plan
-  async createWorkoutPlan(workoutPlan) {
+  async createWorkoutPlan(workoutPlanData) {
     try {
-      const response = await axios.post(API_URL, workoutPlan);
+      const accessToken = localStorage.getItem("accessToken");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      const response = await axios.post(
+        `${BASE_URL}/workoutPlans`,
+        workoutPlanData,
+        config
+      );
       return response.data;
     } catch (error) {
-      console.error("Error creating workout plan:", error);
-      throw error;
+      throw new Error("Failed to create workout plan");
     }
   }
 
-  // Update an existing workout plan
-  async updateWorkoutPlan(id, workoutPlan) {
+  async updateWorkoutPlan(id, workoutPlanData) {
     try {
-      const response = await axios.put(`${API_URL}/${id}`, workoutPlan);
+      const accessToken = localStorage.getItem("accessToken");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      const response = await axios.put(
+        `${BASE_URL}/workoutPlans/${id}`,
+        workoutPlanData,
+        config
+      );
       return response.data;
     } catch (error) {
-      console.error(`Error updating workout plan with ID ${id}:`, error);
-      throw error;
+      throw new Error("Failed to update workout plan");
     }
   }
 
-  // Delete a workout plan
   async deleteWorkoutPlan(id) {
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      const accessToken = localStorage.getItem("accessToken");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+      await axios.delete(`${BASE_URL}/workoutPlans/${id}`, config);
     } catch (error) {
-      console.error(`Error deleting workout plan with ID ${id}:`, error);
-      throw error;
+      throw new Error("Failed to delete workout plan");
     }
   }
 }
