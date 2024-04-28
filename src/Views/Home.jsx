@@ -3,6 +3,7 @@ import "../Styles/Home.css";
 import Header from "../Components/Home/Header";
 import UserService from "../Services/UserService";
 import state from "../Utils/Store";
+import Navbar from "../Components/Home/Navbar";
 
 const Home = () => {
   useEffect(() => {
@@ -16,6 +17,7 @@ const Home = () => {
   }, []);
   return (
     <div>
+      <Navbar />
       <Header />
     </div>
   );
