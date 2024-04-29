@@ -18,6 +18,7 @@ import CreateMealPlanModal from "../Components/Modals/CreateMealPlanModal";
 import MealPlanService from "../Services/MealPlanService";
 import FriendProfileModal from "../Components/Modals/FriendProfileModal";
 import { message } from "antd";
+import LeftMenu from "../Components/Community/LeftMenu";
 const Community = () => {
   const snap = useSnapshot(state);
   const getWorkoutStories = async () => {
@@ -69,10 +70,24 @@ const Community = () => {
       getMealPlans();
     });
   }, []);
-
+  const communityBodyStyle = {
+    color: "white",
+    width: "100vw",
+    height: "100vh",
+  };
   return (
-    <div className="community-body">
-      <div className="main">
+    <div className="community-body" style={communityBodyStyle}>
+      <div
+        className="main"
+        style={{
+          ...{
+            display: "flex",
+            justifyContent: "space-between",
+            marginLeft: "250px",
+          },
+        }}
+      >
+        <LeftMenu />
         <CenterSection />
       </div>
       <UserProfileModal />

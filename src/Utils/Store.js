@@ -12,7 +12,7 @@ const state = proxy({
   users: [],
   selectedPost: null,
   updatePostModalOpened: false,
-  activeIndex: 0,
+  activeIndex: 1,
   createWorkoutPlanOpened: false,
   workoutPlans: [],
   editWorkoutPlanOpened: false,

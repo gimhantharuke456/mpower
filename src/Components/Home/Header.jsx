@@ -5,6 +5,14 @@ import AuthModal from "../Modals/AuthModal";
 const Header = () => {
   const navigate = useNavigate();
   const [isAuthModalOpened, setIsAuthModalOpened] = useState(false);
+  const authButtonClicked = () => {
+    if (localStorage.getItem("userId")) {
+      navigate("/community");
+    } else {
+      setIsAuthModalOpened(true);
+    }
+  };
+
   return (
     <header class="header" id="header">
       <div class="section__container header__container">
@@ -13,7 +21,9 @@ const Header = () => {
           <h2>ISS FOR EVERY SUCCESS</h2>
           <p>Start by taking inspirations, continue it to give inspirations</p>
           <div class="header__btn">
-            <button class="btn btn__primary">GET STARTED</button>
+            <button onClick={authButtonClicked} class="btn btn__primary">
+              GET STARTED
+            </button>
           </div>
         </div>
       </div>

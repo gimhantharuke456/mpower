@@ -14,11 +14,7 @@ const Navbar = () => {
             <i className="ri-menu-line"></i>
           </div>
         </div>
-        <ul className="nav__links" id="nav-links">
-          <li>
-            <a href="#contact">CONTACT US</a>
-          </li>
-        </ul>
+        <ul className="nav__links" id="nav-links"></ul>
       </div>
     </nav>
   );

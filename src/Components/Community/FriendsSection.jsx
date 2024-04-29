@@ -4,6 +4,7 @@ import { useSnapshot } from "valtio";
 import state from "../../Utils/Store";
 import axios from "axios";
 import { Button, List, Avatar, Card } from "antd";
+
 const FriendsSection = () => {
   const snap = useSnapshot(state);
   const [friends, setFriends] = useState([]);
@@ -38,7 +39,8 @@ const FriendsSection = () => {
         setFriends(friends);
       })
       .catch((err) => {});
-  }, []);
+  }, [snap.currentUser, snap.users]);
+
   const unfriend = async (friendId) => {
     try {
       await UserConnectionService.deleteUserConnection(
@@ -52,13 +54,18 @@ const FriendsSection = () => {
       console.error("Error unfriending:", error);
     }
   };
+
   return (
     <div>
       <List
+        style={{ marginTop: 20 }}
         dataSource={friends}
         renderItem={(friend) => (
           <Card
-            style={{ background: "#b7b8b9", color: "white" }}
+            style={{
+              background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
+              color: "white",
+            }}
             bordered={false}
             key={friend.id}
           >
@@ -74,14 +81,20 @@ const FriendsSection = () => {
               ]}
             >
               <List.Item.Meta
-                style={{ color: "white", fontSize: "16px" }}
                 avatar={<Avatar src={friend.image} size={64} />}
                 title={
-                  <span style={{ color: "white" }}>{friend.username}</span>
+                  <span
+                    style={{ color: "white", fontSize: 24, fontWeight: "bold" }}
+                  >
+                    {friend.username}
+                  </span>
                 }
                 description={
-                  <span style={{ color: "white" }}>{friend.biography}</span>
+                  <span style={{ fontSize: 18, color: "white" }}>
+                    {friend.biography}
+                  </span>
                 }
+                style={{ color: "white" }}
               />
             </List.Item>
           </Card>

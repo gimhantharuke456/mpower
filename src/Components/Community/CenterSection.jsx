@@ -25,9 +25,11 @@ const CenterSection = () => {
   }, []);
   return (
     <div class="center">
-      <nav
+      <div
         style={{
           height: 70,
+          display: "flex",
+          justifyContent: "space-between",
           width: "100%",
           marginBottom: 8,
         }}
@@ -41,8 +43,11 @@ const CenterSection = () => {
             fontWeight: 600,
           }}
         >
-          <img style={{ maxHeight: 40 }} src="assets/logo.png" alt="logo" />
-          Power
+          <img
+            style={{ maxHeight: 40, maxWidth: 60 }}
+            src="assets/logo.png"
+            alt="logo"
+          />
         </div>
         <Avatar
           style={{ cursor: "pointer", border: "5px solid red" }}
@@ -52,37 +57,46 @@ const CenterSection = () => {
           size={70}
           src={snap.currentUser?.image}
         />
-      </nav>
+      </div>
       <TobBox />
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="Feed" key="1">
-          <MyPost />
-          <div>
-            {snap.posts.map((post) => {
-              return <FriendsPost key={post?.id} post={post} />;
-            })}
-          </div>
-        </TabPane>
-        <TabPane tab="Workout Plans" key="2">
-          <CreateWorkoutPlanBox />
-          <div>
-            {snap.workoutPlans.map((plan) => (
-              <WorkoutPlanCard key={plan.id} plan={plan} />
-            ))}
-          </div>
-        </TabPane>
-        <TabPane tab="Meal Plans" key="3">
-          <CreaetMealPlanBox />
-          <div>
-            {snap.mealPlans.map((plan) => (
-              <MealPlanCard key={plan.id} plan={plan} />
-            ))}
-          </div>
-        </TabPane>
-        <TabPane tab="Friends" key={"4"}>
-          <FriendsSection />
-        </TabPane>
-      </Tabs>
+      <div>
+        {snap.activeIndex === 1 && (
+          <>
+            {" "}
+            <MyPost />
+            <div>
+              {snap.posts.map((post) => {
+                return <FriendsPost key={post?.id} post={post} />;
+              })}
+            </div>{" "}
+          </>
+        )}
+        {snap.activeIndex === 2 && (
+          <>
+            <CreateWorkoutPlanBox />
+            <div>
+              {snap.workoutPlans.map((plan) => (
+                <WorkoutPlanCard key={plan.id} plan={plan} />
+              ))}
+            </div>
+          </>
+        )}
+        {snap.activeIndex === 4 && (
+          <>
+            <FriendsSection />
+          </>
+        )}
+        {snap.activeIndex === 3 && (
+          <>
+            <CreaetMealPlanBox />
+            <div>
+              {snap.mealPlans.map((plan) => (
+                <MealPlanCard key={plan.id} plan={plan} />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };
