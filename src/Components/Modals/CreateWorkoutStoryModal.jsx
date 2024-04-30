@@ -1,11 +1,22 @@
 import React, { useState } from "react";
-import { Modal, Upload, Input, Button, DatePicker, message } from "antd";
+import {
+  Modal,
+  Upload,
+  Input,
+  Button,
+  DatePicker,
+  message,
+  Select,
+} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useSnapshot } from "valtio";
 import state from "../../Utils/Store";
 import UploadFileService from "../../Services/UploadFileService";
 import WorkoutStoryService from "../../Services/WorkoutStoryService";
+
 const uploader = new UploadFileService();
+const { Option } = Select;
+
 const CreateWorkoutStoryModal = () => {
   const snap = useSnapshot(state);
   const [imageUploading, setImageUploading] = useState(false);
@@ -15,6 +26,9 @@ const CreateWorkoutStoryModal = () => {
     title: "",
     description: "",
     timestamp: null,
+    exerciseType: "", // New field: Exercise Type
+    timeDuration: 0, // New field: Time Duration
+    intensity: "", // New field: Intensity Options
   });
 
   const handleCreateWorkoutStory = async () => {
@@ -28,6 +42,14 @@ const CreateWorkoutStoryModal = () => {
       await WorkoutStoryService.createWorkoutStory(body);
       state.storyCards = await WorkoutStoryService.getAllWorkoutStories();
       message.success("Workout story created successfully");
+      setFormData({
+        title: "",
+        description: "",
+        timestamp: null,
+        exerciseType: "", // New field: Exercise Type
+        timeDuration: 0, // New field: Time Duration
+        intensity: "", // New field: Intensity Options
+      });
     } catch (error) {
       message.error("Error creating workout story");
     } finally {
@@ -60,6 +82,13 @@ const CreateWorkoutStoryModal = () => {
     setFormData({
       ...formData,
       timestamp: date,
+    });
+  };
+
+  const handleIntensityChange = (value) => {
+    setFormData({
+      ...formData,
+      intensity: value,
     });
   };
 
@@ -99,6 +128,33 @@ const CreateWorkoutStoryModal = () => {
         style={{ marginBottom: "1rem", width: "100%" }}
         onChange={handleDateChange}
       />
+      <Input
+        placeholder="Exercise Type"
+        name="exerciseType"
+        value={formData.exerciseType}
+        onChange={handleInputChange}
+        style={{ marginBottom: "1rem" }}
+      />
+      <Input
+        placeholder="Time Duration (in minutes)"
+        type="number"
+        name="timeDuration"
+        value={formData.timeDuration}
+        onChange={handleInputChange}
+        style={{ marginBottom: "1rem" }}
+      />
+      <Select
+        placeholder="Select Intensity"
+        style={{ width: "100%", marginBottom: "1rem" }}
+        onChange={handleIntensityChange}
+        value={formData.intensity}
+      >
+        <Option value="No Efforts">No Efforts</Option>
+        <Option value="Mid Efforts">Mid Efforts</Option>
+        <Option value="Moderate Efforts">Moderate Efforts</Option>
+        <Option value="Severe Efforts">Severe Efforts</Option>
+        <Option value="Maximal Efforts">Maximal Efforts</Option>
+      </Select>
       <Input.TextArea
         placeholder="Description"
         name="description"
