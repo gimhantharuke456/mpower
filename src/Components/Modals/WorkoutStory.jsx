@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Form, Input, Upload, message } from "antd";
+import {
+  Modal,
+  Button,
+  Form,
+  Input,
+  Upload,
+  message,
+  DatePicker,
+  Select,
+} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useSnapshot } from "valtio";
 import state from "../../Utils/Store";
 import UploadFileService from "../../Services/UploadFileService";
 import WorkoutStoryService from "../../Services/WorkoutStoryService";
+import moment from "moment";
 
 const uploadService = new UploadFileService();
+const { Option } = Select;
 
 const WorkoutStory = () => {
   const snap = useSnapshot(state);
@@ -17,10 +28,17 @@ const WorkoutStory = () => {
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [uploadedImage, setUploadedImage] = useState();
+
   useEffect(() => {
     form.setFieldsValue({
       title: workoutStory?.title,
       description: workoutStory?.description,
+      exerciseType: workoutStory?.exerciseType,
+      timeDuration: workoutStory?.timeDuration,
+      intensity: workoutStory?.intensity,
+      timestamp: workoutStory?.timestamp
+        ? moment(workoutStory.timestamp)
+        : null,
     });
   }, [workoutStory]);
 
@@ -28,6 +46,10 @@ const WorkoutStory = () => {
     title: workoutStory?.title || "",
     image: workoutStory?.image || "",
     description: workoutStory?.description || "",
+    exerciseType: workoutStory?.exerciseType || "", // New field: Exercise Type
+    timeDuration: workoutStory?.timeDuration || 0, // New field: Time Duration
+    intensity: workoutStory?.intensity || "", // New field: Intensity
+    timestamp: workoutStory?.timestamp || null, // New field: Timestamp
   });
 
   const handleUpdate = async () => {
@@ -42,7 +64,7 @@ const WorkoutStory = () => {
       message.success("Successfully updated");
       form.resetFields();
     } catch (error) {
-      message.success("Error while deleting story");
+      message.error("Error while updating story");
     } finally {
       setLoading(false);
     }
@@ -65,11 +87,16 @@ const WorkoutStory = () => {
   };
 
   const handleCancel = () => {
-    form.resetFields(); // Reset form fields to initial values
+    form.resetFields();
+    state.workoutStoryOpen = false;
     setUpdatedStory({
       title: workoutStory?.title || "",
       image: workoutStory?.image || "",
       description: workoutStory?.description || "",
+      exerciseType: workoutStory?.exerciseType || "",
+      timeDuration: workoutStory?.timeDuration || 0,
+      intensity: workoutStory?.intensity || "",
+      timestamp: workoutStory?.timestamp || null,
     });
   };
 
@@ -97,7 +124,7 @@ const WorkoutStory = () => {
   return (
     <Modal
       title={workoutStory.title}
-      open={snap.workoutStoryOpen}
+      visible={snap.workoutStoryOpen}
       onCancel={() => {
         state.workoutStoryOpen = false;
       }}
@@ -135,6 +162,9 @@ const WorkoutStory = () => {
             <img src={workoutStory?.image} height={300} alt="Workout Story" />
           </div>
           <p>{workoutStory?.description}</p>
+          <p>{`Excersice type : ${workoutStory?.exerciseType}`}</p>
+          <p>{`Time duration ${workoutStory?.timeDuration}`}</p>
+          <p>{`Intentsity ${workoutStory?.intensity}`}</p>
         </div>
       )}
       {userId === workoutStory.userId && (
@@ -148,11 +178,51 @@ const WorkoutStory = () => {
           </div>
           <Form.Item label="Title" name="title">
             <Input
-              value={updatedStory.title}
               onChange={(e) =>
                 setUpdatedStory({ ...updatedStory, title: e.target.value })
               }
             />
+          </Form.Item>
+          <Form.Item label="Timestamp" name="timestamp">
+            <DatePicker
+              onChange={(date) =>
+                setUpdatedStory({ ...updatedStory, timestamp: date })
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Exercise Type" name="exerciseType">
+            <Input
+              onChange={(e) =>
+                setUpdatedStory({
+                  ...updatedStory,
+                  exerciseType: e.target.value,
+                })
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Time Duration" name="timeDuration">
+            <Input
+              type="number"
+              onChange={(e) =>
+                setUpdatedStory({
+                  ...updatedStory,
+                  timeDuration: e.target.value,
+                })
+              }
+            />
+          </Form.Item>
+          <Form.Item label="Intensity" name="intensity">
+            <Select
+              onChange={(value) =>
+                setUpdatedStory({ ...updatedStory, intensity: value })
+              }
+            >
+              <Option value="No Efforts">No Efforts</Option>
+              <Option value="Mid Efforts">Mid Efforts</Option>
+              <Option value="Moderate Efforts">Moderate Efforts</Option>
+              <Option value="Severe Efforts">Severe Efforts</Option>
+              <Option value="Maximal Efforts">Maximal Efforts</Option>
+            </Select>
           </Form.Item>
           {imageUploading ? (
             <p>Please wait image uploading</p>
