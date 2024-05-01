@@ -153,7 +153,7 @@ nav {
       rgba(0, 0, 0, 0.2),
       rgba(0, 0, 0, 0.8)
     ),
-    url("/public/assets/header.jpg");
+    url("/public/assets/home_bg.jpg");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;

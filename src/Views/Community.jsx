@@ -17,7 +17,7 @@ import UpdateMealPlanModal from "../Components/Modals/UpdateMealPlanModal";
 import CreateMealPlanModal from "../Components/Modals/CreateMealPlanModal";
 import MealPlanService from "../Services/MealPlanService";
 import FriendProfileModal from "../Components/Modals/FriendProfileModal";
-import { message } from "antd";
+import { ConfigProvider, message } from "antd";
 import LeftMenu from "../Components/Community/LeftMenu";
 const Community = () => {
   const snap = useSnapshot(state);
@@ -83,7 +83,8 @@ const Community = () => {
           ...{
             display: "flex",
             justifyContent: "space-between",
-            marginLeft: "250px",
+            display: "flex",
+            flexDirection: "column",
           },
         }}
       >

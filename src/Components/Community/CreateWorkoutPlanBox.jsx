@@ -11,7 +11,7 @@ const CreateWorkoutPlanBox = () => {
         state.createWorkoutPlanOpened = true;
       }}
       style={{
-        background: "linear-gradient(to right, #4facfe, #00f2fe)", // Blue gradient
+        background: "linear-gradient(to right, #222, #333)",
         padding: "10px 15px",
         borderRadius: "7px",
         boxShadow: "0 1px 8px rgba(0,0,0,0.2)",

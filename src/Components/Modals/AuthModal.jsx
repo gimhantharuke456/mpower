@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Modal, Form, Input, Button, Upload, message } from "antd";
+import {
+  Modal,
+  Form,
+  Input,
+  Button,
+  Upload,
+  message,
+  ConfigProvider,
+} from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import UploadFileService from "../../Services/UploadFileService";
 import AuthService from "../../Services/AuthService";
@@ -77,122 +85,127 @@ const AuthModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Modal
-      title="Sign In or Sign Up"
-      open={isOpen}
-      footer={null}
-      onCancel={onClose}
-    >
-      <Form
-        name="authForm"
-        form={form}
-        initialValues={{ remember: true }}
-        onFinish={handleFormSubmit}
-        autoComplete="off"
+    <div>
+      <Modal
+        title="Sign In or Sign Up"
+        open={isOpen}
+        footer={null}
+        onCancel={onClose}
       >
-        <Form.Item
-          name="email"
-          label="Username"
-          rules={[{ required: true, message: "Please input your Email!" }]}
+        <Form
+          name="authForm"
+          form={form}
+          initialValues={{ remember: true }}
+          onFinish={handleFormSubmit}
+          autoComplete="off"
         >
-          <Input placeholder="Email" />
-        </Form.Item>
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[{ required: true, message: "Please input your Email!" }]}
+          >
+            <Input placeholder="Email" />
+          </Form.Item>
 
-        <Form.Item
-          name="password"
-          label="Password"
-          rules={[{ required: true, message: "Please input your Password!" }]}
-        >
-          <Input.Password placeholder="Password" />
-        </Form.Item>
+          <Form.Item
+            name="password"
+            label="Password"
+            rules={[{ required: true, message: "Please input your Password!" }]}
+          >
+            <Input.Password placeholder="Password" />
+          </Form.Item>
 
-        {!signinFocused && (
-          <>
-            <Form.Item
-              name="confirm"
-              dependencies={["password"]}
-              hasFeedback
-              label="Confirm Password"
-              rules={[
-                {
-                  required: true,
-                  message: "Please confirm your password!",
-                },
-                ({ getFieldValue }) => ({
-                  validator(_, value) {
-                    if (!value || getFieldValue("password") === value) {
-                      return Promise.resolve();
-                    }
-                    return Promise.reject(
-                      new Error(
-                        "The two passwords that you entered do not match!"
-                      )
-                    );
+          {!signinFocused && (
+            <>
+              <Form.Item
+                name="confirm"
+                dependencies={["password"]}
+                hasFeedback
+                label="Confirm Password"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please confirm your password!",
                   },
-                }),
-              ]}
-            >
-              <Input.Password placeholder="Confirm Password" />
-            </Form.Item>
-            <Form.Item
-              name="username"
-              rules={[
-                { required: true, message: "Please input your Username!" },
-              ]}
-              label="Username"
-            >
-              <Input placeholder="Username" />
-            </Form.Item>
-            <Form.Item
-              name="biography"
-              rules={[
-                { required: true, message: "Please input your biography!" },
-              ]}
-              label="Biography"
-            >
-              <Input placeholder="biography" />
-            </Form.Item>
-            <Form.Item
-              name="fitnessGoals"
-              rules={[
-                { required: true, message: "Please input your fitness goals!" },
-              ]}
-              label="Fitness Goals"
-            >
-              <Input placeholder="Fitness Goals" />
-            </Form.Item>
-            <Form.Item
-              name="file"
-              valuePropName="fileList"
-              getValueFromEvent={normFile}
-              extra="Optional: Upload an image for your profile"
-            >
-              <Upload.Dragger beforeUpload={() => false} multiple={false}>
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p className="ant-upload-text">
-                  Click or drag file to this area to upload
-                </p>
-              </Upload.Dragger>
-            </Form.Item>
-          </>
-        )}
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(
+                        new Error(
+                          "The two passwords that you entered do not match!"
+                        )
+                      );
+                    },
+                  }),
+                ]}
+              >
+                <Input.Password placeholder="Confirm Password" />
+              </Form.Item>
+              <Form.Item
+                name="username"
+                rules={[
+                  { required: true, message: "Please input your Username!" },
+                ]}
+                label="Username"
+              >
+                <Input placeholder="Username" />
+              </Form.Item>
+              <Form.Item
+                name="biography"
+                rules={[
+                  { required: true, message: "Please input your biography!" },
+                ]}
+                label="Biography"
+              >
+                <Input placeholder="biography" />
+              </Form.Item>
+              <Form.Item
+                name="fitnessGoals"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your fitness goals!",
+                  },
+                ]}
+                label="Fitness Goals"
+              >
+                <Input placeholder="Fitness Goals" />
+              </Form.Item>
+              <Form.Item
+                name="file"
+                valuePropName="fileList"
+                getValueFromEvent={normFile}
+                extra="Optional: Upload an image for your profile"
+              >
+                <Upload.Dragger beforeUpload={() => false} multiple={false}>
+                  <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                  </p>
+                  <p className="ant-upload-text">
+                    Click or drag file to this area to upload
+                  </p>
+                </Upload.Dragger>
+              </Form.Item>
+            </>
+          )}
 
-        <Form.Item>
-          <Button loading={isLoading} type="primary" htmlType="submit">
-            {signinFocused ? "Sign In" : "Sign Up"}
-          </Button>
-        </Form.Item>
-        <Form.Item>
-          <Button type="link" onClick={toggleFocus}>
-            {signinFocused
-              ? "Need an account? Sign up"
-              : "Already have an account? Sign in"}
-          </Button>
-        </Form.Item>
-      </Form>
-    </Modal>
+          <Form.Item>
+            <Button loading={isLoading} type="primary" htmlType="submit">
+              {signinFocused ? "Sign In" : "Sign Up"}
+            </Button>
+          </Form.Item>
+          <Form.Item>
+            <Button type="link" onClick={toggleFocus}>
+              {signinFocused
+                ? "Need an account? Sign up"
+                : "Already have an account? Sign in"}
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </div>
   );
 };
 

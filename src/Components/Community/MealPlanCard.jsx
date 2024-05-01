@@ -23,15 +23,16 @@ const MealPlanCard = ({ plan }) => {
       title="Meal Plan"
       style={{
         width: "100%",
-        background: "linear-gradient(to right, #a1c4fd, #c2e9fb)",
-        color: "black",
+        background: "linear-gradient(to right, #333, #555, #222)",
+        color: "white",
         marginBottom: 8,
+        border: "3px solid black",
       }}
       headStyle={{
-        background: "linear-gradient(to right, #a1c4fd, #c2e9fb)",
+        background: "linear-gradient(to right, #222, #444, #111)",
         color: "white",
       }}
-      bordered={false}
+      bordered={true}
     >
       <img src={plan.mediaUrl} style={{ width: "100%", maxHeight: 400 }} />
       <p>Meal Details: {plan.mealDetails}</p>

@@ -14,7 +14,7 @@
       width: 100%;
       height: auto;
       padding: 20px 20px 0 20px;
-      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+      background:   linear-gradient(to bottom, #222, #333);
       min-height: 98vh;
       margin-right: 10%;
       margin-left: 10%;
@@ -276,7 +276,7 @@
     margin: 10px 0;
     width: 100%;
     height: auto;
-    background: linear-gradient(to right, #0a539d, #03396c);
+    background: linear-gradient(to right, #333, #555, #222);
     padding: 10px 15px;
     color: white;
     border-radius: 7px;

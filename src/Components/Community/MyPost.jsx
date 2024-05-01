@@ -11,7 +11,7 @@ const MyPost = () => {
         state.createPostModalOpened = true;
       }}
       style={{
-        background: "linear-gradient(to right, #0a3d62, #1c578c)",
+        background: "linear-gradient(to right, #222, #333)",
         color: "white",
         padding: "10px 15px",
         borderRadius: "7px",

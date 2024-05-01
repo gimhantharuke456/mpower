@@ -11,12 +11,12 @@ const CreateMealPlanBox = () => {
         state.createMealPlanOpened = true;
       }}
       style={{
-        background: "linear-gradient(to right, #2193b0, #6dd5ed)", // Blue gradient
+        background: "linear-gradient(to right, #222, #333)",
         padding: "10px 15px",
         borderRadius: "7px",
         boxShadow: "0 1px 8px rgba(0,0,0,0.2)",
         marginBottom: "10px",
-        color: "white", // Ensuring text color is white for better visibility
+        color: "white",
       }}
     >
       <div
@@ -41,8 +41,8 @@ const CreateMealPlanBox = () => {
             border: "none",
             padding: "10px",
             borderRadius: "4px",
-            color: "black", // Specific text color for input for readability
-            backgroundColor: "rgba(255, 255, 255, 0.5)", // Slightly transparent background for the input
+            color: "white", // Specific text color for input for readability
+            backgroundColor: "transparent", // Slightly transparent background for the input
           }}
         />
       </div>

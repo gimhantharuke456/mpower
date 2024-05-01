@@ -1,6 +1,6 @@
 .main {
     display: flex;
-    background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+    background: linear-gradient(to bottom, #222, #333);
     overflow: hidden; /* Ensure bubbles don't cause scroll */
     position: relative; /* Needed for absolute positioning of bubbles */
   }

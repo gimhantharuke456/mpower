@@ -12,6 +12,7 @@ import CreaetMealPlanBox from "./CreaetMealPlanBox";
 import MealPlanCard from "./MealPlanCard";
 import FriendsSection from "./FriendsSection";
 import { Tabs, Avatar } from "antd";
+import Notifications from "./Notifications";
 
 const { TabPane } = Tabs;
 const CenterSection = () => {
@@ -24,7 +25,7 @@ const CenterSection = () => {
       .catch((err) => {});
   }, []);
   return (
-    <div class="center">
+    <div class="center" style={{ width: "80vw" }}>
       <div
         style={{
           height: 70,
@@ -94,6 +95,11 @@ const CenterSection = () => {
                 <MealPlanCard key={plan.id} plan={plan} />
               ))}
             </div>
+          </>
+        )}
+        {snap.activeIndex === 5 && (
+          <>
+            <Notifications />
           </>
         )}
       </div>

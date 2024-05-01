@@ -82,13 +82,14 @@ const UserProfileModal = () => {
         </Button>,
         <Button
           key="update"
-          type="primary"
+          danger
+          type="dashed"
           onClick={() => {
             localStorage.clear();
             navigte("/");
           }}
         >
-          Update
+          Logout
         </Button>,
       ]}
     >

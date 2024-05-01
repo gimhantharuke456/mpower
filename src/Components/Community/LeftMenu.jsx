@@ -1,8 +1,9 @@
 import React from "react";
 import { useSnapshot } from "valtio";
 import state from "../../Utils/Store";
+import NotificationsDropdown from "./NotificationsDropdown";
 
-const LeftMenu = () => {
+const TopMenu = () => {
   const snap = useSnapshot(state);
 
   const handleClick = (index) => {
@@ -12,32 +13,23 @@ const LeftMenu = () => {
   return (
     <div
       style={{
-        position: "fixed",
-        top: 0,
-        background: "linear-gradient(to bottom, #0f2027, #203a43, #2c5364)",
-        left: 0,
-        width: "250px",
-        height: "100vh",
-        color: "#333",
-        boxShadow: "2px 0 5px rgba(0,0,0,0.1)",
+        background: "linear-gradient(to bottom, #333, #222)",
+        color: "#fff",
+        boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
         zIndex: 1000,
+        display: "flex",
+        height: 80,
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "10px 20px",
       }}
     >
-      <h3
-        style={{
-          textAlign: "center",
-          padding: "20px 0",
-          borderBottom: "1px solid #ccc",
-          color: "white",
-        }}
-      >
-        Fit Physique
-      </h3>
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      <h3 style={{ margin: 0 }}>Fitto</h3>
+      <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex" }}>
         {[
           "Posts",
-          "Meal Plans",
           "Workout Plans",
+          "Meal Plans",
           "Friends",
           "Notifications",
         ].map((item, index) => (
@@ -45,14 +37,14 @@ const LeftMenu = () => {
             key={index}
             onClick={() => handleClick(index + 1)}
             style={{
-              padding: "10px 20px",
-              borderBottom: "1px solid #ccc",
+              margin: "0 10px",
+              cursor: "pointer",
+              padding: "5px 10px",
+              borderRadius: "5px",
               background:
                 snap.activeIndex === index + 1
-                  ? "linear-gradient(to right, #6a11cb, #2575fc)"
-                  : "linear-gradient(to bottom, #0f2027, #203a43, #2c5364)",
-              color: snap.activeIndex === index + 1 ? "white" : "white",
-              cursor: "pointer",
+                  ? "linear-gradient(to right, #222, #333)"
+                  : "none",
             }}
           >
             <a href="#" style={{ textDecoration: "none", color: "inherit" }}>
@@ -65,4 +57,4 @@ const LeftMenu = () => {
   );
 };
 
-export default LeftMenu;
+export default TopMenu;

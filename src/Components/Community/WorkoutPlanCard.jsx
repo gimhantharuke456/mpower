@@ -23,14 +23,15 @@ const WorkoutPlanCard = ({ plan }) => {
     <Card
       title={plan.planName}
       headStyle={{
-        background: "linear-gradient(to right, #0a539d, #03396c)",
+        background: "linear-gradient(to right, #333, #555, #222)",
         border: 0,
         color: "white",
       }}
       style={{
-        background: "linear-gradient(to right, #b7b8b9, #757677)",
+        background: "linear-gradient(to right, #222, #444, #111)",
         color: "white",
         marginBottom: "16px",
+        border: "3px solid black",
       }}
       bordered={false}
     >
