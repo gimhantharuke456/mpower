@@ -36,8 +36,9 @@ const LeftMenu = () => {
       <ul style={{ listStyle: "none", padding: 0 }}>
         {[
           "Posts",
-          "Meal Plans",
           "Workout Plans",
+          "Meal Plans",
+
           "Friends",
           "Notifications",
         ].map((item, index) => (

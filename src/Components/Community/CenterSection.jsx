@@ -12,6 +12,7 @@ import CreaetMealPlanBox from "./CreaetMealPlanBox";
 import MealPlanCard from "./MealPlanCard";
 import FriendsSection from "./FriendsSection";
 import { Tabs, Avatar } from "antd";
+import Notifications from "./Notifications";
 
 const { TabPane } = Tabs;
 const CenterSection = () => {
@@ -84,6 +85,11 @@ const CenterSection = () => {
         {snap.activeIndex === 4 && (
           <>
             <FriendsSection />
+          </>
+        )}
+        {snap.activeIndex === 5 && (
+          <>
+            <Notifications />
           </>
         )}
         {snap.activeIndex === 3 && (

@@ -1,42 +1,33 @@
 import React, { useState } from "react";
-import { Modal, Switch, Input, Button, Upload, message } from "antd";
+import { Modal, Switch, Input, Button, Upload, message, Form } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { useSnapshot } from "valtio";
 import state from "../../Utils/Store";
 import UploadFileService from "../../Services/UploadFileService";
 import UserService from "../../Services/UserService";
 import { useNavigate } from "react-router-dom";
+
 const uploader = new UploadFileService();
+const { Item } = Form;
+
 const UserProfileModal = () => {
   const snap = useSnapshot(state);
   const [uploadUserLoading, setUploadUserLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
-  console.log(`Current user uid ${snap.currentUser?.uid}`);
-  const [updatedUser, setUpdatedUser] = useState({
-    username: snap.currentUser?.username,
-    biography: snap.currentUser?.biography,
-    fitnessGoals: snap.currentUser?.fitnessGoals,
-    profileVisibility: snap.currentUser?.profileVisibility,
-    image: snap.currentUser?.image,
-    uid: snap.currentUser?.uid,
-  });
-
-  const handleBiographyChange = (e) => {
-    setUpdatedUser({ ...updatedUser, biography: e.target.value });
-  };
-
-  const handleFitnessGoalsChange = (e) => {
-    setUpdatedUser({ ...updatedUser, fitnessGoals: e.target.value });
-  };
-
-  const handleProfileVisibilityChange = (checked) => {
-    setUpdatedUser({ ...updatedUser, profileVisibility: checked });
-  };
+  const [form] = Form.useForm();
+  const navigte = useNavigate();
 
   const handleUpdateProfile = async () => {
     try {
       setUpdateLoading(true);
-      await UserService.updateUserPrifile(updatedUser);
+      const formData = form.getFieldsValue();
+      if (formData.image instanceof File) {
+        formData.image = await handleFileUpload(formData.image);
+      }
+      await UserService.updateUserPrifile({
+        ...formData,
+        uid: snap.currentUser?.id,
+      });
 
       state.profileModalOpend = false;
       message.success("Profile updated successfully");
@@ -48,19 +39,19 @@ const UserProfileModal = () => {
     }
   };
 
+  const handleFileUpload = async (file) => {
+    const url = await uploader.uploadFile(file, "userImages");
+    return url;
+  };
+
   const handleFileChange = async (info) => {
     if (info.file) {
       setUploadUserLoading(true);
-      const url = await uploader.uploadFile(
-        info.fileList[0].originFileObj,
-        "userImages"
-      );
-      setUpdatedUser({ ...updatedUser, image: url });
-    } else if (info.file.status === "removed") {
+      const imageUrl = await handleFileUpload(info.fileList[0].originFileObj);
+      form.setFieldsValue({ image: imageUrl });
+      setUploadUserLoading(false);
     }
-    setUploadUserLoading(false);
   };
-  const navigte = useNavigate();
 
   return (
     <Modal
@@ -81,49 +72,30 @@ const UserProfileModal = () => {
           Update
         </Button>,
         <Button
-          key="update"
-          type="primary"
+          key="logout"
+          danger
+          type="dashed"
           onClick={() => {
             localStorage.clear();
             navigte("/");
           }}
         >
-          Update
+          Logout
         </Button>,
       ]}
     >
       <h2>User Profile</h2>
-      <div>
-        <p>Username:</p>
-        <Input value={updatedUser.username} disabled />
-      </div>
-      <div>
-        <p>Biography:</p>
-        <Input
-          value={updatedUser.biography}
-          onChange={handleBiographyChange}
-          placeholder="Enter your biography"
-        />
-      </div>
-      <div>
-        <p>Fitness Goals:</p>
-        <Input
-          value={updatedUser.fitnessGoals}
-          onChange={handleFitnessGoalsChange}
-          placeholder="Enter your fitness goals"
-        />
-      </div>
-      {!uploadUserLoading && (
-        <div>
-          <p>Profile Picture:</p>
-          {updatedUser.image && (
-            <img
-              src={updatedUser.image}
-              alt="Profile"
-              style={{ maxWidth: "100%" }}
-            />
-          )}
-
+      <Form form={form} initialValues={snap.currentUser}>
+        <Item name="username" label="Username">
+          <Input disabled />
+        </Item>
+        <Item name="biography" label="Biography">
+          <Input placeholder="Enter your biography" />
+        </Item>
+        <Item name="fitnessGoals" label="Fitness Goals">
+          <Input placeholder="Enter your fitness goals" />
+        </Item>
+        <Item name="image" label="Profile Picture">
           <Upload
             accept="image/*"
             onChange={handleFileChange}
@@ -132,17 +104,22 @@ const UserProfileModal = () => {
           >
             <Button icon={<UploadOutlined />}>Upload Image</Button>
           </Upload>
-        </div>
-      )}
-      {uploadUserLoading && <p>Uploading profile picture...</p>}
-
-      <div>
-        <p>Profile Visibility:</p>
-        <Switch
-          checked={updatedUser.profileVisibility}
-          onChange={handleProfileVisibilityChange}
-        />
-      </div>
+          {form.getFieldValue("image") && (
+            <img
+              src={form.getFieldValue("image")}
+              alt="Profile"
+              style={{ maxWidth: "100%" }}
+            />
+          )}
+        </Item>
+        <Item
+          name="profileVisibility"
+          label="Profile Visibility"
+          valuePropName="checked"
+        >
+          <Switch />
+        </Item>
+      </Form>
     </Modal>
   );
 };
